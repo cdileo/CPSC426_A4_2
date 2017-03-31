@@ -458,7 +458,8 @@ function update() {
 		var height = Math.floor( windowHeight * view.height );
 		renderer.setViewport( left, bottom, width, height );
 		renderer.setScissor( left, bottom, width, height );
-		renderer.enableScissorTest ( true );
+		// renderer.enableScissorTest ( true );
+		renderer.setScissorTest( true );
 		renderer.setClearColor( view.background );
 
 		camera_.aspect = width / height;
@@ -508,7 +509,7 @@ function Boid(x,y, z) {
   x = x * ((1-(-1)) * Math.random());
   y = y * ((1-(-1)) * Math.random());
   z = z * ((1-(-1)) * Math.random());
-  console.log("Random Position: (" + x + ", " + y + ", " + z + ")")
+  console.log("Random Position: (" + x + ", " + y + ", " + z + ")");
   
   this.velocity = new THREE.Vector3(0, 0, 0);
   this.position = new THREE.Vector3(x, y, z);
@@ -541,7 +542,8 @@ function Boid(x,y, z) {
   /// Accumulate a new acceleration each time based on rules
   this.flock = function(boids) 
   {
-    
+	// Just a linear combination of the three contributing forces
+    this.acceleration = this.separate(boids) + this.align(boids) + this.cohesion(boids);
   }
 
   /// Update new location by integrating the velocity
@@ -577,7 +579,29 @@ function Boid(x,y, z) {
   // Method checks for nearby boids and steers away
   this.separate = function(boids) 
   {
-   
+	// over each boid,
+	// check if within influence range
+	// 	if yes, get vector from this boid to that boid, add to running total
+	let finalSepVector = new THREE.Vector3();
+
+	for (let i = 0; i < boids.length; i++) {
+		let otherPos = boids[i].position;
+		let thisPos = this.position;
+		let vToB = thisPos - otherPos; // Vector *away* from this boid
+		let dToB = thisPos.distanceTo( otherPos );
+		let numInR = 0;
+		if (dToB <= this.r) {
+	// 		// Then we're in the influence radius for this boid
+	// 		// numInR++; // Guess not needed - all should be in 0-this.r magnitude range
+			let normVToB = vToB.normalize(); // Want unit vector so we can scale to r
+	// 		// This should be an inverse relationship between distance to this boid
+	// 		// and resultant applied force. Closer = higher contrib. 
+	// 		// going for the equivalent of a (1 - x) relationship.
+			let resSepV = normVToB * this.r - vToB;
+			finalSepVector.add( resSepV ); // result so far
+		}
+	}
+	return finalSepVector;
   }
   
   //Separation for Obstacles
