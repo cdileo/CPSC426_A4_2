@@ -514,6 +514,7 @@ function Boid(x,y, z) {
   this.velocity = new THREE.Vector3(0, 0, 0);
   this.position = new THREE.Vector3(x, y, z);
   this.r = 2.0;
+  this.rSq = this.r * this.r; // Faster calcs
   /// Maximum speed
   this.maxspeed = 0.4; 
   /// Maximum steering force
@@ -527,6 +528,10 @@ function Boid(x,y, z) {
 		shading: THREE.FlatShading
 	} );
   var geom = new THREE.Mesh( geometry, material );
+  
+  // TODO: apply an actual transformation matrix.
+  var transform = new THREE.Matrix4().makeTranslation(x,y,z); 
+  geom.setMatrix( transform );
   
   this.geom = geom;
   scene.add( this.geom );
@@ -549,7 +554,9 @@ function Boid(x,y, z) {
   /// Update new location by integrating the velocity
   this.update = function() 
   {
-
+	  // TODO
+	// let 
+	// this.position.add()
   }
 
   // A method that calculates and applies a steering force towards a target
@@ -579,29 +586,30 @@ function Boid(x,y, z) {
   // Method checks for nearby boids and steers away
   this.separate = function(boids) 
   {
-	// over each boid,
-	// check if within influence range
-	// 	if yes, get vector from this boid to that boid, add to running total
-	let finalSepVector = new THREE.Vector3();
+	// // over each boid,
+	// // check if within influence range
+	// // 	if yes, get vector from this boid to that boid, add to running total
+	// let finalSepVector = new THREE.Vector3();
 
-	for (let i = 0; i < boids.length; i++) {
-		let otherPos = boids[i].position;
-		let thisPos = this.position;
-		let vToB = thisPos - otherPos; // Vector *away* from this boid
-		let dToB = thisPos.distanceTo( otherPos );
-		let numInR = 0;
-		if (dToB <= this.r) {
-	// 		// Then we're in the influence radius for this boid
-	// 		// numInR++; // Guess not needed - all should be in 0-this.r magnitude range
-			let normVToB = vToB.normalize(); // Want unit vector so we can scale to r
-	// 		// This should be an inverse relationship between distance to this boid
-	// 		// and resultant applied force. Closer = higher contrib. 
-	// 		// going for the equivalent of a (1 - x) relationship.
-			let resSepV = normVToB * this.r - vToB;
-			finalSepVector.add( resSepV ); // result so far
-		}
-	}
-	return finalSepVector;
+	// for (let i = 0; i < boids.length; i++) {
+	// 	let otherPos = boids[i].position;
+	// 	let thisPos = this.position;
+	// 	let vToB = new THREE.Vector3();
+	// 	vToB = vToB.subVectors(thisPos, otherPos); // Vector *away* from this boid
+	// 	let dToB = thisPos.distanceToSquared( otherPos );
+	// 	let numInR = 0;
+	// 	if (dToB * dToB <= this.rSq) { // Because we're using distanceSquared
+	// // 		// Then we're in the influence radius for this boid
+	// // 		// numInR++; // Guess not needed - all should be in 0-this.r magnitude range
+	// 		let normVToB = vToB.normalize(); // Want unit vector so we can scale to r
+	// // 		// This should be an inverse relationship between distance to this boid
+	// // 		// and resultant applied force. Closer = higher contrib. 
+	// // 		// going for the equivalent of a (1 - x) relationship.
+	// 		let resSepV = normVToB * this.r - vToB;
+	// 		finalSepVector.add( resSepV ); // result so far
+	// 	}
+	// }
+	// return finalSepVector;
   }
   
   //Separation for Obstacles
@@ -614,18 +622,17 @@ function Boid(x,y, z) {
   // Alignment
   // For every nearby boid in the system, calculate the average velocity
   this.align = function(boids) {
-
+	let finalAlignVector = new THREE.Vector3();
+	return finalAlignVector;
   }
 
   // Cohesion
   // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
   this.cohesion = function(boids) {
-
+	let finalCohesionVector = new THREE.Vector3();
+	return finalCohesionVector;
   }
 }
-
-
-
 
 
 // The Flock (a list of Boid agents)
