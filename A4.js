@@ -549,14 +549,17 @@ function Boid(x,y, z) {
   this.flock = function(boids) 
   {
 	// Just a linear combination of the three contributing forces
-    this.acceleration = this.separate(boids) + this.align(boids) + this.cohesion(boids);
+    this.acceleration.add(this.separate(boids));
+    this.acceleration.add(this.align(boids));
+    this.acceleration.add(this.cohesion(boids));
   }
 
   /// Update new location by integrating the velocity
   this.update = function() 
   {
 	// TODO
-	this.position = this.acceleration * delta;
+	// this.position = this.acceleration * delta;
+	this.position.add(this.acceleration * delta);
   }
 
   // A method that calculates and applies a steering force towards a target
@@ -594,8 +597,9 @@ function Boid(x,y, z) {
 	for (let i = 0; i < boids.length; i++) {
 		let otherPos = boids[i].position;
 		let thisPos = this.position;
+		if (thisPos === otherPos) continue;
 		let vToB = new THREE.Vector3();
-		vToB = vToB.subVectors(thisPos, otherPos); // Vector *away* from this boid
+		vToB.subVectors(thisPos, otherPos); // Vector *away* from this boid
 		let dToB = thisPos.distanceTo( otherPos );
 		let numInR = 0;
 		if (dToB <= this.r) { // Because we're using distanceSquared
