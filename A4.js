@@ -286,6 +286,10 @@ var orbit_distance= 4.0;
 
 var sim_time = 0.0;
 
+var rotAxis = new THREE.Vector3(1,0,0);
+var rotToAxis = new THREE.Matrix4();
+rotToAxis.makeRotationAxis(rotAxis, 1.5708);
+
 function updateSystem() 
 {
 	// Animate your solar system here.
@@ -507,35 +511,36 @@ function Boid(x,y, z) {
 	this.maxX = x;
 	this.maxY = y;
 	this.maxZ = z;
-  this.acceleration = new THREE.Vector3( 0, 0, 0);
-  x = x * ((1-(-1)) * Math.random());
-  y = y * ((1-(-1)) * Math.random());
-  z = z * ((1-(-1)) * Math.random());
-  console.log("Random Position: (" + x + ", " + y + ", " + z + ")");
-  
-  this.velocity = new THREE.Vector3(0, 0, 0);
-  this.position = new THREE.Vector3(x, y, z);
-  this.r = 2.0;
-  this.rSq = this.r * this.r; // Faster calcs
-  /// Maximum speed
-  this.maxspeed = 0.4; 
-  /// Maximum steering force
-  this.maxforce = 0.03; 
-  /// Create Geometry
-  var geometry = new THREE.ConeGeometry( 0.6, 2, 8 );
-  var material = new THREE.MeshPhongMaterial( {
+	this.acceleration = new THREE.Vector3( 0, 0, 0);
+	x = x * ((1-(-1)) * Math.random());
+	y = y * ((1-(-1)) * Math.random());
+	z = z * ((1-(-1)) * Math.random());
+	console.log("Random Position: (" + x + ", " + y + ", " + z + ")");
+
+	this.velocity = new THREE.Vector3(0, 0, 0);
+	this.position = new THREE.Vector3(x, y, z);
+	this.r = 2.0;
+	this.rSq = this.r * this.r; // Faster calcs
+	/// Maximum speed
+	this.maxspeed = 0.4; 
+	/// Maximum steering force
+	this.maxforce = 0.03; 
+	/// Create Geometry
+	var geometry = new THREE.ConeGeometry( 0.6, 2, 8 );
+	var material = new THREE.MeshPhongMaterial( {
 		color: 0x156289,
 		emissive: 0x072534,
 		side: THREE.DoubleSide,
 		shading: THREE.FlatShading
 	} );
-  var geom = new THREE.Mesh( geometry, material );
-  
-  // TODO: apply an actual transformation matrix.
-  geom.position.set(x, y, z);
 
-  this.geom = geom;
-  scene.add( this.geom );
+	geometry.applyMatrix(rotToAxis);
+	var geom = new THREE.Mesh( geometry, material );
+
+	// TODO: apply an actual transformation matrix.
+	geom.position.set(x, y, z);
+	this.geom = geom;
+	scene.add( this.geom );
 
   this.run = function(boids, i) {
     // if (i == 0){
@@ -599,7 +604,6 @@ function Boid(x,y, z) {
 	lookAtHolder.copy(p).add(this.velocity);
 	this.geom.position.set(p.x, p.y, p.z);
 	this.geom.lookAt(lookAtHolder);
-	// this.geom.rotation
   }
 
   /// If an agent leaves the area wrap it arround back into the other side of the box
