@@ -537,8 +537,11 @@ function Boid(x,y, z) {
   this.geom = geom;
   scene.add( this.geom );
 
-  this.run = function(boids) {
-    this.flock(boids);
+  this.run = function(boids, i) {
+    // if (i == 0){
+	// 	console.log(`Boid 0's Position: ${this.position.x} ${this.position.y} ${this.position.z}`);
+	// }
+	this.flock(boids);
     this.update();
     this.borders();
     this.render();
@@ -552,27 +555,51 @@ function Boid(x,y, z) {
     this.acceleration.add(this.separate(boids));
     this.acceleration.add(this.align(boids));
     this.acceleration.add(this.cohesion(boids));
+	this.seek(obstacles[obstacles.length - 1]);
   }
 
   /// Update new location by integrating the velocity
   this.update = function() 
   {
-	// TODO
-	// this.position = this.acceleration * delta;
-	this.position.add(this.acceleration * delta);
+	// TODO: implement me
+	// this.position.add(this.acceleration * delta * this.maxspeed);
+	// new v = old v + a * dt
+	let oldPos = this.position.z;
+	let scaledAccel = this.acceleration;
+	scaledAccel.multiplyScalar(delta)
+	this.velocity.add(scaledAccel);
+
+	let scaledVel = this.velocity;
+	// scaledVel.multiplyScalar(delta);
+	this.position.add(scaledVel);
+	// console.log(`Old position was ${oldPos}. New pos is ${this.position.z}`);
   }
 
   // A method that calculates and applies a steering force towards a target
   // STEER = DESIRED - VELOCITY
   this.seek = function(target) 
   {
-
+	// TODO: implement me
+	// steering vector = dirToTarget - currentVelocity
+	// acceleration.add(steering)
+	let steering = new THREE.Vector3();
+	let dirToTarget = new THREE.Vector3();
+	dirToTarget.subVectors(target, this.position);
+	steering.subVectors(dirToTarget, this.velocity);
+	this.acceleration.add(steering);
+	// this.acceleration.add(new THREE.Vector3(10,20,100)); // test out plain movement
   }
 
+  var lookAtHolder = new THREE.Vector3(0,0,0);
   /// Render the location of the boid agent
   this.render = function() 
   {
-
+	// Here we change the internal location of the Object3D
+	let p = this.position;
+	lookAtHolder.copy(p).add(this.velocity);
+	this.geom.position.set(p.x, p.y, p.z);
+	this.geom.lookAt(lookAtHolder);
+	// this.geom.rotation
   }
 
   /// If an agent leaves the area wrap it arround back into the other side of the box
@@ -620,12 +647,13 @@ function Boid(x,y, z) {
   // Method checks for nearby obstacles and steers strongly away
   this.separateObs = function(obs) 
   {
-	  
+	// TODO: implement me
   }
 
   // Alignment
   // For every nearby boid in the system, calculate the average velocity
-  this.align = function(boids) {
+  this.align = function(boids) {  
+	// TODO: implement me
 	let finalAlignVector = new THREE.Vector3();
 	return finalAlignVector;
   }
@@ -633,6 +661,7 @@ function Boid(x,y, z) {
   // Cohesion
   // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
   this.cohesion = function(boids) {
+	// TODO: implement me
 	let finalCohesionVector = new THREE.Vector3();
 	return finalCohesionVector;
   }
@@ -647,7 +676,7 @@ function Flock() {
 
   this.run = function() {
     for (var i = 0; i < this.boids.length; i++) {
-      this.boids[i].run(this.boids);  // Passing the entire list of boids to each boid individually
+      this.boids[i].run(this.boids, i);  // Passing the entire list of boids to each boid individually
     }
   }
 
