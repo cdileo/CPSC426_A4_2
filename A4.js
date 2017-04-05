@@ -557,7 +557,7 @@ function Boid(x,y, z) {
   this.flock = function(boids) 
   {
 	// Just a linear combination of the three contributing forces
-    this.acceleration.add(this.separate(boids));
+    // this.acceleration.add(this.separate(boids));
     this.acceleration.add(this.align(boids));
     this.acceleration.add(this.cohesion(boids));
 	this.seek(obstacles[obstacles.length - 1]);
@@ -632,7 +632,6 @@ function Boid(x,y, z) {
 		let vToB = new THREE.Vector3();
 		vToB.subVectors(thisPos, otherPos); // Vector *away* from this boid
 		let dToB = thisPos.distanceTo( otherPos );
-		let numInR = 0;
 		if (dToB <= this.r) { // Because we're using distanceSquared
 	// 		// Then we're in the influence radius for this boid
 	// 		// numInR++; // Guess not needed - all should be in 0-this.r magnitude range
@@ -669,7 +668,19 @@ function Boid(x,y, z) {
   this.cohesion = function(boids) {
 	// TODO: implement me
 	let finalCohesionVector = new THREE.Vector3();
-	return finalCohesionVector;
+	let numInFlock = 0;
+
+	for (let i = 0; i < boids.length; i++) {
+		let otherPos = boids[i].position;
+		let thisPos = this.position;
+		let dToB = thisPos.distanceTo( otherPos );
+		if (thisPos === otherPos || dToB > 10) continue;
+		let vToB = new THREE.Vector3();
+		vToB.subVectors(otherPos, thisPos); // Vector *away* from this boid
+		finalCohesionVector.add(vToB);
+		numInFlock++;
+	}
+	return finalCohesionVector.divideScalar(numInFlock);
   }
 }
 
