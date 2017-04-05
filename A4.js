@@ -651,7 +651,9 @@ function Boid(x,y, z) {
   // Method checks for nearby obstacles and steers strongly away
   this.separateObs = function(obs) 
   {
-	// TODO: implement me
+	let sepObsV = new THREE.Vector3();
+	sepObsV.subVectors(this.position, obs).normalize().multiplyScalar(maxforce);
+	this.acceleration.add(sepObsV);
   }
 
   // Alignment
