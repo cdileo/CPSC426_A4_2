@@ -537,7 +537,6 @@ function Boid(x,y, z) {
 	geometry.applyMatrix(rotToAxis);
 	var geom = new THREE.Mesh( geometry, material );
 
-	// TODO: apply an actual transformation matrix.
 	geom.position.set(x, y, z);
 	this.geom = geom;
 	scene.add( this.geom );
@@ -569,7 +568,6 @@ function Boid(x,y, z) {
 	this.velocity.add(scaledAccel);
 
 	let scaledVel = this.velocity;
-	// scaledVel.multiplyScalar(delta);
 	this.position.add(scaledVel);
   }
 
@@ -577,15 +575,11 @@ function Boid(x,y, z) {
   // STEER = DESIRED - VELOCITY
   this.seek = function(target) 
   {
-	// TODO: implement me
-	// steering vector = dirToTarget - currentVelocity
-	// acceleration.add(steering)
 	let steering = new THREE.Vector3();
 	let dirToTarget = new THREE.Vector3();
 	dirToTarget.subVectors(target, this.position);
 	steering.subVectors(dirToTarget, this.velocity);
 	this.acceleration.add(steering);
-	// this.acceleration.add(new THREE.Vector3(10,20,100)); // test out plain movement
   }
 
   var lookAtHolder = new THREE.Vector3(0,0,0);
