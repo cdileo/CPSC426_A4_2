@@ -543,9 +543,6 @@ function Boid(x,y, z) {
 	scene.add( this.geom );
 
   this.run = function(boids, i) {
-    // if (i == 0){
-	// 	console.log(`Boid 0's Position: ${this.position.x} ${this.position.y} ${this.position.z}`);
-	// }
 	this.flock(boids);
     this.update();
     this.borders();
@@ -566,9 +563,6 @@ function Boid(x,y, z) {
   /// Update new location by integrating the velocity
   this.update = function() 
   {
-	// TODO: implement me
-	// this.position.add(this.acceleration * delta * this.maxspeed);
-	// new v = old v + a * dt
 	let oldPos = this.position.z;
 	let scaledAccel = this.acceleration;
 	scaledAccel.multiplyScalar(delta)
@@ -577,7 +571,6 @@ function Boid(x,y, z) {
 	let scaledVel = this.velocity;
 	// scaledVel.multiplyScalar(delta);
 	this.position.add(scaledVel);
-	// console.log(`Old position was ${oldPos}. New pos is ${this.position.z}`);
   }
 
   // A method that calculates and applies a steering force towards a target
@@ -633,12 +626,12 @@ function Boid(x,y, z) {
 		vToB.subVectors(thisPos, otherPos); // Vector *away* from this boid
 		let dToB = thisPos.distanceTo( otherPos );
 		if (dToB <= this.r) { // Because we're using distanceSquared
-	// 		// Then we're in the influence radius for this boid
-	// 		// numInR++; // Guess not needed - all should be in 0-this.r magnitude range
+			// Then we're in the influence radius for this boid
+			// numInR++; // Guess not needed - all should be in 0-this.r magnitude range
 			let normVToB = vToB.clone().normalize(); // Want unit vector so we can scale to r
-	// 		// This should be an inverse relationship between distance to this boid
-	// 		// and resultant applied force. Closer = higher contrib. 
-	// 		// going for the equivalent of a (1 - x) relationship.
+			// This should be an inverse relationship between distance to this boid
+			// and resultant applied force. Closer = higher contrib. 
+			// going for the equivalent of a (1 - x) relationship.
 			normVToB.multiplyScalar(this.r).sub(vToB);
 			finalSepVector.add( normVToB ); // result so far
 		}
@@ -658,7 +651,6 @@ function Boid(x,y, z) {
   // Alignment
   // For every nearby boid in the system, calculate the average velocity
   this.align = function(boids) {  
-	// TODO: implement me
 	let finalAlignVector = new THREE.Vector3();
 	for (let i = 0; i < boids.length; i++) {
 		let otherPos = boids[i].position;
