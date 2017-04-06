@@ -557,9 +557,9 @@ function Boid(x,y, z) {
   this.flock = function(boids) 
   {
 	// Just a linear combination of the three contributing forces
-    // this.acceleration.add(this.separate(boids));
-    this.acceleration.add(this.align(boids));
-    this.acceleration.add(this.cohesion(boids));
+    this.acceleration.add(this.separate(boids).multiplyScalar(2));
+    this.acceleration.add(this.align(boids).multiplyScalar(1.5));
+    this.acceleration.add(this.cohesion(boids).multiplyScalar(2));
 	this.seek(obstacles[obstacles.length - 1]);
   }
 
@@ -635,12 +635,12 @@ function Boid(x,y, z) {
 		if (dToB <= this.r) { // Because we're using distanceSquared
 	// 		// Then we're in the influence radius for this boid
 	// 		// numInR++; // Guess not needed - all should be in 0-this.r magnitude range
-			let normVToB = vToB.normalize(); // Want unit vector so we can scale to r
+			let normVToB = vToB.clone().normalize(); // Want unit vector so we can scale to r
 	// 		// This should be an inverse relationship between distance to this boid
 	// 		// and resultant applied force. Closer = higher contrib. 
 	// 		// going for the equivalent of a (1 - x) relationship.
-			let resSepV = normVToB * this.r - vToB;
-			finalSepVector.add( resSepV ); // result so far
+			normVToB.multiplyScalar(this.r).sub(vToB);
+			finalSepVector.add( normVToB ); // result so far
 		}
 	}
 	return finalSepVector;
@@ -660,13 +660,19 @@ function Boid(x,y, z) {
   this.align = function(boids) {  
 	// TODO: implement me
 	let finalAlignVector = new THREE.Vector3();
-	return finalAlignVector;
+	for (let i = 0; i < boids.length; i++) {
+		let otherPos = boids[i].position;
+		let thisPos = this.position;
+		let dToB = thisPos.distanceTo( otherPos );
+		if (thisPos === otherPos || dToB > 10) continue; // TODO: tweak this radius
+		finalAlignVector.add(boids[i].velocity);
+	}
+	return finalAlignVector.normalize();
   }
 
   // Cohesion
   // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
   this.cohesion = function(boids) {
-	// TODO: implement me
 	let finalCohesionVector = new THREE.Vector3();
 	let numInFlock = 0;
 
@@ -674,13 +680,13 @@ function Boid(x,y, z) {
 		let otherPos = boids[i].position;
 		let thisPos = this.position;
 		let dToB = thisPos.distanceTo( otherPos );
-		if (thisPos === otherPos || dToB > 10) continue;
+		if (thisPos === otherPos || dToB > 10) continue; // TODO: tweak this radius
 		let vToB = new THREE.Vector3();
 		vToB.subVectors(otherPos, thisPos); // Vector *away* from this boid
 		finalCohesionVector.add(vToB);
 		numInFlock++;
 	}
-	return finalCohesionVector.divideScalar(numInFlock);
+	return finalCohesionVector.normalize();
   }
 }
 
