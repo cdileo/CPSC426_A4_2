@@ -556,7 +556,8 @@ function Boid(x,y, z) {
     this.acceleration.add(this.separate(boids).multiplyScalar(2));
     this.acceleration.add(this.align(boids).multiplyScalar(1.5));
     this.acceleration.add(this.cohesion(boids).multiplyScalar(2));
-	this.seek(obstacles[obstacles.length - 1]);
+	this.acceleration.add(this.seek(obstacles[obstacles.length - 1])); // TODO: seek the proper thing
+	// this.acceleration.add(separateObs(obstacles));
   }
 
   /// Update new location by integrating the velocity
@@ -579,7 +580,7 @@ function Boid(x,y, z) {
 	let dirToTarget = new THREE.Vector3();
 	dirToTarget.subVectors(target, this.position);
 	steering.subVectors(dirToTarget, this.velocity);
-	this.acceleration.add(steering);
+	return steering;
   }
 
   var lookAtHolder = new THREE.Vector3(0,0,0);
@@ -638,6 +639,14 @@ function Boid(x,y, z) {
   this.separateObs = function(obs) 
   {
 	let sepObsV = new THREE.Vector3();
+	for (let i = 0; i < obs.length; i++) {
+		let vToObs = this.position.clone();
+		vToObs.subVectors(obs[i].position, vToObs);
+		if (vToObs.length() <= planets[i].size + .1) {
+			// Avoid hard
+			//TODO: fix this
+		}
+	}
 	sepObsV.subVectors(this.position, obs).normalize().multiplyScalar(maxforce);
 	this.acceleration.add(sepObsV);
   }
