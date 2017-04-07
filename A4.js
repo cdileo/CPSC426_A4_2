@@ -523,9 +523,9 @@ function Boid(x,y, z) {
     this.r = 2.0;
     this.rSq = this.r * this.r; // Faster calcs
     /// Maximum speed
-    this.maxspeed = 0.4; 
+    this.maxspeed = 0.2; 
     /// Maximum steering force
-    this.maxforce = 1; 
+    this.maxforce = .5; 
     /// Create Geometry
     var geometry = new THREE.ConeGeometry( 0.6, 2, 8 );
     var material = new THREE.MeshPhongMaterial( {
