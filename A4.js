@@ -27,24 +27,24 @@ var currentShip=0;
 var length = 100.0;
 // Build axis visuliaztion for debugging.
 x_axis = buildAxis(
-	    new THREE.Vector3( 0, 0, 0 ),
-	    new THREE.Vector3( length, 0, 0 ),
-	    0xFF0000,
-	    false
-	)
+        new THREE.Vector3( 0, 0, 0 ),
+        new THREE.Vector3( length, 0, 0 ),
+        0xFF0000,
+        false
+    )
 y_axis = buildAxis(
-	    new THREE.Vector3( 0, 0, 0 ),
-	    new THREE.Vector3( 0, length, 0 ),
-	    0x00ff00,
-	    false
-	)
+        new THREE.Vector3( 0, 0, 0 ),
+        new THREE.Vector3( 0, length, 0 ),
+        0x00ff00,
+        false
+    )
 z_axis = buildAxis(
-	    new THREE.Vector3( 0, 0, 0 ),
-	    new THREE.Vector3( 0, 0, length ),
-	    0x0000FF,
-	    false
-	)
-	
+        new THREE.Vector3( 0, 0, 0 ),
+        new THREE.Vector3( 0, 0, length ),
+        0x0000FF,
+        false
+    )
+    
 // ASSIGNMENT-SPECIFIC API EXTENSION
 THREE.Object3D.prototype.setMatrix = function(a) {
   this.matrix=a;
@@ -62,28 +62,28 @@ var mouseX = 0, mouseY = 0;
 var windowWidth, windowHeight;
 var backgroundColour = 0.2;
 var views = [
-	{
-		left: 0,
-		bottom: 0,
-		width: 1.0,
-		height: 1.0,
-		background: new THREE.Color().setRGB( backgroundColour, backgroundColour, backgroundColour ),
-		eye: [ 80, 20, 80 ],
-		up: [ 0, 1, 0 ],
-		fov: 45,
-		updateCamera: function ( camera, scene, mouseX, mouseY ) {
-		  // camera.position.x += mouseX * 0.05;
-		  // camera.position.x = Math.max( Math.min( camera.position.x, 2000 ), -2000 );
-		}
-	}
+    {
+        left: 0,
+        bottom: 0,
+        width: 1.0,
+        height: 1.0,
+        background: new THREE.Color().setRGB( backgroundColour, backgroundColour, backgroundColour ),
+        eye: [ 80, 20, 80 ],
+        up: [ 0, 1, 0 ],
+        fov: 45,
+        updateCamera: function ( camera, scene, mouseX, mouseY ) {
+          // camera.position.x += mouseX * 0.05;
+          // camera.position.x = Math.max( Math.min( camera.position.x, 2000 ), -2000 );
+        }
+    }
 ];
 
 
 var STATE = {
-		  World_Control : {value: 1, name: "World_Control"}, 
-		  Relative_Control: {value: 2, name: "Relative_Control"}, 
-		  GeoSync_Control : {value: 3, name: "GeoSync_Control"}
-		};
+          World_Control : {value: 1, name: "World_Control"}, 
+          Relative_Control: {value: 2, name: "Relative_Control"}, 
+          GeoSync_Control : {value: 3, name: "GeoSync_Control"}
+        };
 
 //SETUP RENDERER & SCENE
 var canvas = document.getElementById('canvas');
@@ -116,8 +116,8 @@ scene.add(z_axis);
 
 // ADAPT TO WINDOW RESIZE
 function resize() {
-	windowWidth = window.innerWidth;
-	windowHeight = window.innerHeight;
+    windowWidth = window.innerWidth;
+    windowHeight = window.innerHeight;
   renderer.setSize(window.innerWidth,window.innerHeight);
 }
 
@@ -169,31 +169,31 @@ var grid = new THREE.Line(gridGeometry,gridMaterial,THREE.LinePieces);
 
 function resetCameras()
 {
-	var view = views[0];
-	camera_MotherShip.position.x = view.eye[ 0 ];
-	camera_MotherShip.position.y = view.eye[ 1 ];
-	camera_MotherShip.position.z = view.eye[ 2 ];
-	camera_MotherShip.up.x = view.up[ 0 ];
-	camera_MotherShip.up.y = view.up[ 1 ];
-	camera_MotherShip.up.z = view.up[ 2 ];
-	camera_MotherShip.lookAt( scene.position );
-	scene.add(view.camera);
-	camera_MotherShip.updateProjectionMatrix();
+    var view = views[0];
+    camera_MotherShip.position.x = view.eye[ 0 ];
+    camera_MotherShip.position.y = view.eye[ 1 ];
+    camera_MotherShip.position.z = view.eye[ 2 ];
+    camera_MotherShip.up.x = view.up[ 0 ];
+    camera_MotherShip.up.y = view.up[ 1 ];
+    camera_MotherShip.up.z = view.up[ 2 ];
+    camera_MotherShip.lookAt( scene.position );
+    scene.add(view.camera);
+    camera_MotherShip.updateProjectionMatrix();
 
 }
 
 var manager = new THREE.LoadingManager();
 manager.onProgress = function ( item, loaded, total ) {
 
-	console.log( item, loaded, total );
+    console.log( item, loaded, total );
 
 };
 
 var onProgress = function ( xhr ) {
-	if ( xhr.lengthComputable ) {
-		var percentComplete = xhr.loaded / xhr.total * 100;
-		console.log( Math.round(percentComplete, 2) + '% downloaded' );
-	}
+    if ( xhr.lengthComputable ) {
+        var percentComplete = xhr.loaded / xhr.total * 100;
+        console.log( Math.round(percentComplete, 2) + '% downloaded' );
+    }
 };
 
 var onError = function ( xhr ) 
@@ -220,44 +220,44 @@ var planets = [];
 var obstacles = [];
 var planet_info = [
 {
-	name: 'Mercury',
-	color: 0x00aa44,
-	size: 0.5
+    name: 'Mercury',
+    color: 0x00aa44,
+    size: 0.5
 },
 {
-	name: 'Venus',
-	color: 0xaaaa44,
-	size: 0.8
+    name: 'Venus',
+    color: 0xaaaa44,
+    size: 0.8
 },
 {
-	name: 'Earth',
-	color: 0x0044aa,
-	size: 1.2
+    name: 'Earth',
+    color: 0x0044aa,
+    size: 1.2
 },
 {
-	name: 'Mars',
-	color: 0xdd4444,
-	size: 0.81
+    name: 'Mars',
+    color: 0xdd4444,
+    size: 0.81
 },
 {
-	name: 'Jupiter',
-	color: 0xddaa00,
-	size: 2.2
+    name: 'Jupiter',
+    color: 0xddaa00,
+    size: 2.2
 },
 {
-	name: 'Saturn',
-	color: 0xffaa44,
-	size: 1.8
+    name: 'Saturn',
+    color: 0xffaa44,
+    size: 1.8
 },
 {
-	name: 'Uranus',
-	color: 0x7777dd,
-	size: 1.0
+    name: 'Uranus',
+    color: 0x7777dd,
+    size: 1.0
 },
 {
-	name: 'Neptune',
-	color: 0x0000cc,
-	size: 0.8
+    name: 'Neptune',
+    color: 0x0000cc,
+    size: 0.8
 }
  ];
 
@@ -265,16 +265,16 @@ var dist_ = 7.0;
 var dist_adjust=10.0;
 for (p=0; p < planet_info.length; p++)
 {
-	var planet_i = planet_info[p];
-	var dist_tmp = (dist_ * p) + dist_adjust;
-	var geometry = new THREE.SphereGeometry( planet_i.size, 32, 32 );
-	// generateVertexColors( geometry );
-	var material = new THREE.MeshLambertMaterial( {color: planet_i.color} );
-	var mercury = new THREE.Mesh( geometry, material );
-	planets.push(mercury);
-	obstacles.push(new THREE.Vector3(0,0,0));
+    var planet_i = planet_info[p];
+    var dist_tmp = (dist_ * p) + dist_adjust;
+    var geometry = new THREE.SphereGeometry( planet_i.size, 32, 32 );
+    // generateVertexColors( geometry );
+    var material = new THREE.MeshLambertMaterial( {color: planet_i.color} );
+    var mercury = new THREE.Mesh( geometry, material );
+    planets.push(mercury);
+    obstacles.push(new THREE.Vector3(0,0,0));
 
-	sun.add( mercury );
+    sun.add( mercury );
 }
 
 
@@ -292,11 +292,11 @@ rotToAxis.makeRotationAxis(rotAxis, 1.5708);
 
 function updateSystem() 
 {
-	// Animate your solar system here.
-	if (!animate)
-	{
-		return;
-	}
+    // Animate your solar system here.
+    if (!animate)
+    {
+        return;
+    }
   var num_planents = planets.length;
   var time = clock.getElapsedTime(); // t seconds passed since the clock started.
   delta = clock.getDelta();
@@ -305,14 +305,14 @@ function updateSystem()
   var rot_scale=0.8;
   for (p=0; p < num_planents; p++)
   {
-	  var roation = (sim_time/(p+1.0)) % (Math.PI*2.0);
-	  var rotationM = new THREE.Matrix4().makeRotationY(roation );
-	  var transM = new THREE.Matrix4().makeTranslation( dist_adjust + (p*dist_scale), 0, 0);
-	  var posV = new THREE.Vector3(0,0,0);
-	  var finalM = new THREE.Matrix4().multiplyMatrices(rotationM, transM);
-	  posV.applyMatrix4(finalM);
-	  planets[p].setMatrix(finalM);
-	  obstacles[p] = posV;
+      var roation = (sim_time/(p+1.0)) % (Math.PI*2.0);
+      var rotationM = new THREE.Matrix4().makeRotationY(roation );
+      var transM = new THREE.Matrix4().makeTranslation( dist_adjust + (p*dist_scale), 0, 0);
+      var posV = new THREE.Vector3(0,0,0);
+      var finalM = new THREE.Matrix4().multiplyMatrices(rotationM, transM);
+      posV.applyMatrix4(finalM);
+      planets[p].setMatrix(finalM);
+      obstacles[p] = posV;
   }
   flock.run();
   
@@ -333,56 +333,56 @@ var startDrag_=0;
 
 function onMouseDrag(event)
 {
-	if ( startDrag_ == 1 && (CONTROL_STATE.value == STATE.GeoSync_Control.value))
-	{
-		var delta = event.pageY - mouseY;
-		geoSynchronousOrbitAdjust(camera, step_size*delta);
-		mouseY = event.pageY;
-	}
-	else if ( startDrag_ == 1 )
-	{
-		var deltaY = event.pageY - mouseY;
-		var deltaX = event.pageX - mouseX;
-		var mI = camera.matrixWorld;
-		var scaling = 0.001;
-		// Pitch
-		  var rotationX = new THREE.Matrix4().makeRotationX(-step_size*deltaY*scaling);
-		  mI.multiplyMatrices(mI, rotationX);
-	      // Yaw
-		  var rotationY = new THREE.Matrix4().makeRotationY(-step_size*deltaX*scaling);
-		  mI.multiplyMatrices(mI, rotationY);
-		  camera.setMatrix(mI);
-		  mouseX = event.pageX;
-		  mouseY = event.pageY;
-	  
-	}
+    if ( startDrag_ == 1 && (CONTROL_STATE.value == STATE.GeoSync_Control.value))
+    {
+        var delta = event.pageY - mouseY;
+        geoSynchronousOrbitAdjust(camera, step_size*delta);
+        mouseY = event.pageY;
+    }
+    else if ( startDrag_ == 1 )
+    {
+        var deltaY = event.pageY - mouseY;
+        var deltaX = event.pageX - mouseX;
+        var mI = camera.matrixWorld;
+        var scaling = 0.001;
+        // Pitch
+          var rotationX = new THREE.Matrix4().makeRotationX(-step_size*deltaY*scaling);
+          mI.multiplyMatrices(mI, rotationX);
+          // Yaw
+          var rotationY = new THREE.Matrix4().makeRotationY(-step_size*deltaX*scaling);
+          mI.multiplyMatrices(mI, rotationY);
+          camera.setMatrix(mI);
+          mouseX = event.pageX;
+          mouseY = event.pageY;
+      
+    }
 }
 
 
 function onMouseUp( event ) {
 
-	if ( event.button === THREE.MOUSE.LEFT && ((CONTROL_STATE.value == STATE.Relative_Control.value) ||
-			(CONTROL_STATE.value == STATE.GeoSync_Control.value)) )
-	{
-		startDrag_=0;
-		document.removeEventListener( 'mouseup', onMouseUp, false );
-		document.removeEventListener( 'mousemove', onMouseDrag, false );
-	}
+    if ( event.button === THREE.MOUSE.LEFT && ((CONTROL_STATE.value == STATE.Relative_Control.value) ||
+            (CONTROL_STATE.value == STATE.GeoSync_Control.value)) )
+    {
+        startDrag_=0;
+        document.removeEventListener( 'mouseup', onMouseUp, false );
+        document.removeEventListener( 'mousemove', onMouseDrag, false );
+    }
 }
 
 
 function onMouseDown(event)
 {
 
-	if ( event.button === THREE.MOUSE.LEFT && ((CONTROL_STATE.value == STATE.Relative_Control.value) ||
-			(CONTROL_STATE.value == STATE.GeoSync_Control.value)) )
-	{
-		startDrag_=1;
-		mouseX = event.pageX;
-		mouseY = event.pageY;
-		document.addEventListener('mouseup', onMouseUp);
-		document.addEventListener('mousemove', onMouseDrag);
-	}
+    if ( event.button === THREE.MOUSE.LEFT && ((CONTROL_STATE.value == STATE.Relative_Control.value) ||
+            (CONTROL_STATE.value == STATE.GeoSync_Control.value)) )
+    {
+        startDrag_=1;
+        mouseX = event.pageX;
+        mouseY = event.pageY;
+        document.addEventListener('mouseup', onMouseUp);
+        document.addEventListener('mousemove', onMouseDrag);
+    }
 
 }
 
@@ -390,22 +390,22 @@ document.addEventListener( 'mousedown', onMouseDown, false );
 
 function onMouseMove(event)
 {
-	if ( (mouseMove__ == 1) )
-	{ // only way to get initial mouse position.
-		mouseX = event.pageX;
-		mouseY = event.pageY;
-		mouseMove__ = 2;
-		return;
-	}
-	else if ( mouseMove__ == 2 )
-	{
-		var delta = event.pageY - mouseY;
-		  var mI = camera.matrixWorld;
-		  var rotationM = new THREE.Matrix4().makeTranslation(0,0,step_size*delta);
-		  mI.multiplyMatrices(mI, rotationM);
-		  camera.setMatrix(mI);
-		  mouseY = event.pageY;
-	}
+    if ( (mouseMove__ == 1) )
+    { // only way to get initial mouse position.
+        mouseX = event.pageX;
+        mouseY = event.pageY;
+        mouseMove__ = 2;
+        return;
+    }
+    else if ( mouseMove__ == 2 )
+    {
+        var delta = event.pageY - mouseY;
+          var mI = camera.matrixWorld;
+          var rotationM = new THREE.Matrix4().makeTranslation(0,0,step_size*delta);
+          mI.multiplyMatrices(mI, rotationM);
+          camera.setMatrix(mI);
+          mouseY = event.pageY;
+    }
 }
 
 function onKeyUp(event)
@@ -418,10 +418,10 @@ function onKeyUp(event)
   }
 
 }
-		
+        
 function onKeyDown(event)
 {
-	// TO-DO: BIND KEYS TO YOUR CONTROLS	  
+    // TO-DO: BIND KEYS TO YOUR CONTROLS	  
   if(keyboard.eventMatches(event,"shift+g"))
   {  // Reveal/Hide helper grid
     grid_state = !grid_state;
@@ -432,7 +432,7 @@ function onKeyDown(event)
     animate = !animate;
   }
   else if(keyboard.eventMatches(event,"t") && (!event.repeat) && 
-		  (CONTROL_STATE.value == STATE.Relative_Control.value) )
+          (CONTROL_STATE.value == STATE.Relative_Control.value) )
   {    
     mouseMove__=1;
     keyboard.domElement.addEventListener('keyup', onKeyUp);
@@ -441,7 +441,7 @@ function onKeyDown(event)
   
 }
 keyboard.domElement.addEventListener('keydown', onKeyDown );
-		
+        
 
 // SETUP UPDATE CALL-BACK
 // Hint: It is useful to understand what is being updated here, the effect, and why.
@@ -453,26 +453,26 @@ function update() {
   for ( var ii = 0; ii < views.length; ++ii ) 
   {
 
-		view = views[ii];
-		camera_ = view.camera;
+        view = views[ii];
+        camera_ = view.camera;
 
-		view.updateCamera( camera_, scene, mouseX, mouseY );
+        view.updateCamera( camera_, scene, mouseX, mouseY );
 
-		var left   = Math.floor( windowWidth  * view.left );
-		var bottom = Math.floor( windowHeight * view.bottom );
-		var width  = Math.floor( windowWidth  * view.width );
-		var height = Math.floor( windowHeight * view.height );
-		renderer.setViewport( left, bottom, width, height );
-		renderer.setScissor( left, bottom, width, height );
-		// renderer.enableScissorTest ( true );
-		renderer.setScissorTest( true );
-		renderer.setClearColor( view.background );
+        var left   = Math.floor( windowWidth  * view.left );
+        var bottom = Math.floor( windowHeight * view.bottom );
+        var width  = Math.floor( windowWidth  * view.width );
+        var height = Math.floor( windowHeight * view.height );
+        renderer.setViewport( left, bottom, width, height );
+        renderer.setScissor( left, bottom, width, height );
+        // renderer.enableScissorTest ( true );
+        renderer.setScissorTest( true );
+        renderer.setClearColor( view.background );
 
-		camera_.aspect = width / height;
-		camera_.updateProjectionMatrix();
+        camera_.aspect = width / height;
+        camera_.updateProjectionMatrix();
 
-		renderer.render( scene, camera_ );
-	}
+        renderer.render( scene, camera_ );
+    }
 }
 
 var flock;
@@ -485,9 +485,10 @@ function setup() {
   var height = 25;
   var depth = 25;
   for (var i = 0; i < 150; i++) 
+//   for (var i = 0; i < 50; i++) 
   {
-	  var _boid = new Boid(width, height, depth);
-	  flock.addBoid(_boid);
+      var _boid = new Boid(width, height, depth);
+      flock.addBoid(_boid);
   }
 }
 setup();
@@ -507,42 +508,42 @@ function clone(obj) {
 }
 
 function Boid(x,y, z) {
-	/// Assume box around these numbers
-	this.maxX = x;
-	this.maxY = y;
-	this.maxZ = z;
-	this.acceleration = new THREE.Vector3( 0, 0, 0);
-	x = x * ((1-(-1)) * Math.random());
-	y = y * ((1-(-1)) * Math.random());
-	z = z * ((1-(-1)) * Math.random());
-	console.log("Random Position: (" + x + ", " + y + ", " + z + ")");
+    /// Assume box around these numbers
+    this.maxX = x;
+    this.maxY = y;
+    this.maxZ = z;
+    this.acceleration = new THREE.Vector3( 0, 0, 0);
+    x = x * ((1-(-1)) * Math.random());
+    y = y * ((1-(-1)) * Math.random());
+    z = z * ((1-(-1)) * Math.random());
+    console.log("Random Position: (" + x + ", " + y + ", " + z + ")");
 
-	this.velocity = new THREE.Vector3(0, 0, 0);
-	this.position = new THREE.Vector3(x, y, z);
-	this.r = 2.0;
-	this.rSq = this.r * this.r; // Faster calcs
-	/// Maximum speed
-	this.maxspeed = 0.4; 
-	/// Maximum steering force
-	this.maxforce = 0.03; 
-	/// Create Geometry
-	var geometry = new THREE.ConeGeometry( 0.6, 2, 8 );
-	var material = new THREE.MeshPhongMaterial( {
-		color: 0x156289,
-		emissive: 0x072534,
-		side: THREE.DoubleSide,
-		shading: THREE.FlatShading
-	} );
+    this.velocity = new THREE.Vector3(0, 0, 0);
+    this.position = new THREE.Vector3(x, y, z);
+    this.r = 2.0;
+    this.rSq = this.r * this.r; // Faster calcs
+    /// Maximum speed
+    this.maxspeed = 0.4; 
+    /// Maximum steering force
+    this.maxforce = 1; 
+    /// Create Geometry
+    var geometry = new THREE.ConeGeometry( 0.6, 2, 8 );
+    var material = new THREE.MeshPhongMaterial( {
+        color: 0x156289,
+        emissive: 0x072534,
+        side: THREE.DoubleSide,
+        shading: THREE.FlatShading
+    } );
 
-	geometry.applyMatrix(rotToAxis);
-	var geom = new THREE.Mesh( geometry, material );
+    geometry.applyMatrix(rotToAxis);
+    var geom = new THREE.Mesh( geometry, material );
 
-	geom.position.set(x, y, z);
-	this.geom = geom;
-	scene.add( this.geom );
+    geom.position.set(x, y, z);
+    this.geom = geom;
+    scene.add( this.geom );
 
   this.run = function(boids, i) {
-	this.flock(boids);
+    this.flock(boids);
     this.update();
     this.borders();
     this.render();
@@ -552,46 +553,49 @@ function Boid(x,y, z) {
   /// Accumulate a new acceleration each time based on rules
   this.flock = function(boids) 
   {
-	// Just a linear combination of the three contributing forces
-    this.acceleration.add(this.separate(boids).multiplyScalar(2));
-    this.acceleration.add(this.align(boids).multiplyScalar(1.5));
-    this.acceleration.add(this.cohesion(boids).multiplyScalar(2));
-	this.acceleration.add(this.seek(obstacles[obstacles.length - 1])); // TODO: seek the proper thing
-	// this.acceleration.add(separateObs(obstacles));
+    // Just a linear combination of the three contributing forces
+    this.acceleration.set(0, 0, 0);
+    this.acceleration.add(this.separate(boids).multiplyScalar(50));
+    this.acceleration.add(this.align(boids).multiplyScalar(50));
+    this.acceleration.add(this.cohesion(boids).multiplyScalar(50));
+    this.acceleration.add(this.seek(obstacles[obstacles.length - 1])); // TODO: seek the proper thing
+    this.acceleration.add(this.separateObs(obstacles));
   }
 
   /// Update new location by integrating the velocity
   this.update = function() 
   {
-	let oldPos = this.position.z;
-	let scaledAccel = this.acceleration;
-	scaledAccel.multiplyScalar(delta)
-	this.velocity.add(scaledAccel);
+    // let scaledAccel = this.acceleration.clampLength(0, this.maxforce);
+    let scaledAccel = this.acceleration;
+    // scaledAccel.multiplyScalar(delta);
+    this.velocity.add(scaledAccel);
 
-	let scaledVel = this.velocity;
-	this.position.add(scaledVel);
+    // Keep the boids below max speed
+    this.velocity.clampLength(0, this.maxspeed); 
+    // let scaledVel = this.velocity.setLength(this.maxspeed);
+    this.position.add(this.velocity);
   }
 
   // A method that calculates and applies a steering force towards a target
   // STEER = DESIRED - VELOCITY
   this.seek = function(target) 
   {
-	let steering = new THREE.Vector3();
-	let dirToTarget = new THREE.Vector3();
-	dirToTarget.subVectors(target, this.position);
-	steering.subVectors(dirToTarget, this.velocity);
-	return steering;
+    let steering = new THREE.Vector3();
+    let dirToTarget = new THREE.Vector3();
+    dirToTarget.subVectors(target, this.position);
+    steering.subVectors(dirToTarget, this.velocity);
+    return steering.normalize();
   }
 
   var lookAtHolder = new THREE.Vector3(0,0,0);
   /// Render the location of the boid agent
   this.render = function() 
   {
-	// Here we change the internal location of the Object3D
-	let p = this.position;
-	lookAtHolder.copy(p).add(this.velocity);
-	this.geom.position.set(p.x, p.y, p.z);
-	this.geom.lookAt(lookAtHolder);
+    // Here we change the internal location of the Object3D
+    let p = this.position;
+    lookAtHolder.copy(p).add(this.velocity);
+    this.geom.position.set(p.x, p.y, p.z);
+    this.geom.lookAt(lookAtHolder);
   }
 
   /// If an agent leaves the area wrap it arround back into the other side of the box
@@ -608,80 +612,76 @@ function Boid(x,y, z) {
   // Method checks for nearby boids and steers away
   this.separate = function(boids) 
   {
-	// over each boid,
-	// check if within influence range
-	// 	if yes, get vector from this boid to that boid, add to running total
-	let finalSepVector = new THREE.Vector3();
+    // over each boid,
+    // check if within influence range
+    // 	if yes, get vector from this boid to that boid, add to running total
+    let finalSepVector = new THREE.Vector3();
 
-	for (let i = 0; i < boids.length; i++) {
-		let otherPos = boids[i].position;
-		let thisPos = this.position;
-		if (thisPos === otherPos) continue;
-		let vToB = new THREE.Vector3();
-		vToB.subVectors(thisPos, otherPos); // Vector *away* from this boid
-		let dToB = thisPos.distanceTo( otherPos );
-		if (dToB <= this.r) { // Because we're using distanceSquared
-			// Then we're in the influence radius for this boid
-			// numInR++; // Guess not needed - all should be in 0-this.r magnitude range
-			let normVToB = vToB.clone().normalize(); // Want unit vector so we can scale to r
-			// This should be an inverse relationship between distance to this boid
-			// and resultant applied force. Closer = higher contrib. 
-			// going for the equivalent of a (1 - x) relationship.
-			normVToB.multiplyScalar(this.r).sub(vToB);
-			finalSepVector.add( normVToB ); // result so far
-		}
-	}
-	return finalSepVector;
+    for (let i = 0; i < boids.length; i++) {
+        let otherPos = boids[i].position;
+        let thisPos = this.position;
+        if (thisPos === otherPos) continue;
+        let vToB = new THREE.Vector3();
+        vToB.subVectors(thisPos, otherPos); // Vector *away* from this boid
+        let dToB = thisPos.distanceTo( otherPos );
+        if (dToB <= this.r) { // Because we're using distanceSquared
+            // Then we're in the influence radius for this boid
+            // numInR++; // Guess not needed - all should be in 0-this.r magnitude range
+            let normVToB = vToB.clone().normalize(); // Want unit vector so we can scale to r
+            // This should be an inverse relationship between distance to this boid
+            // and resultant applied force. Closer = higher contrib. 
+            // going for the equivalent of a (1 - x) relationship.
+            normVToB.multiplyScalar(this.r).sub(vToB);
+            finalSepVector.add( normVToB ); // result so far
+        }
+    }
+    return finalSepVector.normalize();
   }
   
   //Separation for Obstacles
   // Method checks for nearby obstacles and steers strongly away
   this.separateObs = function(obs) 
   {
-	let sepObsV = new THREE.Vector3();
-	for (let i = 0; i < obs.length; i++) {
-		let vToObs = this.position.clone();
-		vToObs.subVectors(obs[i].position, vToObs);
-		if (vToObs.length() <= planets[i].size + .1) {
-			// Avoid hard
-			//TODO: fix this
-		}
-	}
-	sepObsV.subVectors(this.position, obs).normalize().multiplyScalar(maxforce);
-	this.acceleration.add(sepObsV);
+    let sepObsV = new THREE.Vector3();
+    for (let i = 0; i < obs.length; i++) {
+        let vToObs = this.position.clone();
+        vToObs.subVectors(obs[i], vToObs);
+        if (vToObs.length() <= planets[i].size + .1) {
+            sepObsV.add(vToObs);
+        }
+    }
+    return sepObsV.normalize();
   }
 
   // Alignment
   // For every nearby boid in the system, calculate the average velocity
   this.align = function(boids) {  
-	let finalAlignVector = new THREE.Vector3();
-	for (let i = 0; i < boids.length; i++) {
-		let otherPos = boids[i].position;
-		let thisPos = this.position;
-		let dToB = thisPos.distanceTo( otherPos );
-		if (thisPos === otherPos || dToB > 10) continue; // TODO: tweak this radius
-		finalAlignVector.add(boids[i].velocity);
-	}
-	return finalAlignVector.normalize();
+    let finalAlignVector = new THREE.Vector3();
+    for (let i = 0; i < boids.length; i++) {
+        let otherPos = boids[i].position;
+        let thisPos = this.position;
+        let dToB = thisPos.distanceTo( otherPos );
+        if (thisPos === otherPos || dToB > this.r * 2) continue; // TODO: tweak this radius
+        finalAlignVector.add(boids[i].velocity);
+    }
+    return finalAlignVector.normalize();
   }
 
   // Cohesion
   // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
   this.cohesion = function(boids) {
-	let finalCohesionVector = new THREE.Vector3();
-	let numInFlock = 0;
+    let finalCohesionVector = new THREE.Vector3();
 
-	for (let i = 0; i < boids.length; i++) {
-		let otherPos = boids[i].position;
-		let thisPos = this.position;
-		let dToB = thisPos.distanceTo( otherPos );
-		if (thisPos === otherPos || dToB > 10) continue; // TODO: tweak this radius
-		let vToB = new THREE.Vector3();
-		vToB.subVectors(otherPos, thisPos); // Vector *away* from this boid
-		finalCohesionVector.add(vToB);
-		numInFlock++;
-	}
-	return finalCohesionVector.normalize();
+    for (let i = 0; i < boids.length; i++) {
+        let otherPos = boids[i].position;
+        let thisPos = this.position;
+        let dToB = thisPos.distanceTo( otherPos );
+        if (thisPos === otherPos || dToB > this.r * 2) continue; // TODO: tweak this radius
+        let vToB = new THREE.Vector3();
+        vToB.subVectors(otherPos, thisPos); // Vector *away* from this boid
+        finalCohesionVector.add(vToB);
+    }
+    return finalCohesionVector.normalize();
   }
 }
 
