@@ -534,9 +534,14 @@ function Boid(x,y, z) {
         side: THREE.DoubleSide,
         shading: THREE.FlatShading
     } );
+    var shaderMat = new THREE.ShaderMaterial( {
+        vertexShader : document.getElementById("vertexshader").textContent,
+        fragmentShader : document.getElementById("fragmentshader").textContent
+    })
 
     geometry.applyMatrix(rotToAxis);
-    var geom = new THREE.Mesh( geometry, material );
+    // var geom = new THREE.Mesh( geometry, material );
+    var geom = new THREE.Mesh( geometry, shaderMat );
 
     geom.position.set(x, y, z);
     this.geom = geom;

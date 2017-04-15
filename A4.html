@@ -20,6 +20,21 @@
     <script type="text/javascript" src="js/KeyboardState.js"></script> <!-- By Jerome Etienne: http://jetienne.com/ -->
     <script type="text/javascript" src="js/MatrixStack.js"></script>
     <script type="text/javascript" src="js/material.js"></script>
+    <script type="x-shader/x-vertex" id="vertexshader">
+      void main() {
+        gl_Position = projectionMatrix *
+                      modelViewMatrix *
+                      vec4(position,1.0);
+      }
+    </script>
+    <script type="x-shader/x-fragment" id="fragmentshader">
+      void main() {
+        gl_FragColor = vec4(1.0,  // R
+                            0.0,  // G
+                            1.0,  // B
+                            1.0); // A
+      }
+    </script>
     <!-- <script type="text/javascript" src="js/p5.min.js"></script>
     <script type="text/javascript" src="js/p5.dom.min.js"></script> -->
 	<script type="application/javascript" src="A4.js"></script>
