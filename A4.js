@@ -507,6 +507,15 @@ function clone(obj) {
     return copy;
 }
 
+// Positional shader material applied to boids
+var shaderMat = new THREE.ShaderMaterial( {
+    vertexShader : document.getElementById("vertexshader").textContent,
+    fragmentShader : document.getElementById("fragmentshader").textContent,
+    uniforms : { 
+        position : { value : this.normalizedPosition } 
+    }
+});
+
 function Boid(x,y, z) {
     /// Assume box around these numbers
     this.maxX = x;
@@ -520,6 +529,9 @@ function Boid(x,y, z) {
 
     this.velocity = new THREE.Vector3(0, 0, 0);
     this.position = new THREE.Vector3(x, y, z);
+    this.normalizedPosition = new THREE.Vector3(x / this.maxX, 
+                                                y / this.maxY, 
+                                                z / this.maxZ );
     this.r = 2.0;
     this.rSq = this.r * this.r; // Faster calcs
     /// Maximum speed
@@ -534,10 +546,6 @@ function Boid(x,y, z) {
         side: THREE.DoubleSide,
         shading: THREE.FlatShading
     } );
-    var shaderMat = new THREE.ShaderMaterial( {
-        vertexShader : document.getElementById("vertexshader").textContent,
-        fragmentShader : document.getElementById("fragmentshader").textContent
-    })
 
     geometry.applyMatrix(rotToAxis);
     // var geom = new THREE.Mesh( geometry, material );
