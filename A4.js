@@ -511,7 +511,7 @@ function clone(obj) {
 var shaderMat = new THREE.ShaderMaterial( {
     vertexShader : document.getElementById("vertexshader").textContent,
     fragmentShader : document.getElementById("fragmentshader").textContent,
-    uniforms : { 
+     uniforms : { 
         position : { value : this.normalizedPosition } 
     }
 });
@@ -555,13 +555,19 @@ function Boid(x,y, z) {
     this.geom = geom;
     scene.add( this.geom );
 
+    this.updateNormalizedPosition = function () 
+    {
+        this.normalizedPosition.x = this.position.x / this.maxX;
+        this.normalizedPosition.y = this.position.y / this.maxY;
+        this.normalizedPosition.z = this.position.z / this.maxZ;
+    }
+
   this.run = function(boids, i) {
     this.flock(boids);
     this.update();
     this.borders();
     this.render();
   }
-
 
   /// Accumulate a new acceleration each time based on rules
   this.flock = function(boids) 
@@ -587,6 +593,7 @@ function Boid(x,y, z) {
     this.velocity.clampLength(0, this.maxspeed); 
     // let scaledVel = this.velocity.setLength(this.maxspeed);
     this.position.add(this.velocity);
+    this.updateNormalizedPosition();
   }
 
   // A method that calculates and applies a steering force towards a target
@@ -609,6 +616,8 @@ function Boid(x,y, z) {
     lookAtHolder.copy(p).add(this.velocity);
     this.geom.position.set(p.x, p.y, p.z);
     this.geom.lookAt(lookAtHolder);
+    let c = this.normalizedPosition;
+    this.geom.material.color.setRGB(c.x, c.y, c.z);
   }
 
   /// If an agent leaves the area wrap it arround back into the other side of the box

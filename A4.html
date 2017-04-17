@@ -28,9 +28,9 @@
       }
     </script>
     <script type="x-shader/x-fragment" id="fragmentshader">
-      void main() {
-        uniform vec3 normalizedPosition;
+      uniform vec3 normalizedPosition;
 
+      void main() {
         gl_FragColor = vec4(normalizedPosition[0],  // X -> R
                             normalizedPosition[1],  // Y -> G
                             normalizedPosition[2],  // Z -> B
