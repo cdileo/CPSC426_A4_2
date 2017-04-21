@@ -557,9 +557,9 @@ function Boid(x,y, z) {
 
     this.updateNormalizedPosition = function () 
     {
-        this.normalizedPosition.x = this.position.x / this.maxX;
-        this.normalizedPosition.y = this.position.y / this.maxY;
-        this.normalizedPosition.z = this.position.z / this.maxZ;
+        this.normalizedPosition.x = (this.position.x + this.maxX) / (2*this.maxX);
+        this.normalizedPosition.y = (this.position.y + this.maxY) / (2*this.maxY);
+        this.normalizedPosition.z = (this.position.z + this.maxZ) / (2*this.maxZ);
     }
 
   this.run = function(boids, i) {
